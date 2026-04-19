@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { ArrowLeft, Save, AlertTriangle, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, AlertTriangle, Trash2, Eye, EyeOff } from 'lucide-react';
 
 const Profile = () => {
   const { user, setUser, logout } = useContext(AuthContext);
@@ -11,6 +11,9 @@ const Profile = () => {
   
   const [name, setName] = useState(user?.name || '');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
@@ -25,13 +28,19 @@ const Profile = () => {
           setIsUpdating(false);
           return;
         }
+        if (password !== confirmPassword) {
+          toast.error("Passwords do not match");
+          setIsUpdating(false);
+          return;
+        }
         payload.password = password;
       }
       
       const res = await axios.put('/api/auth/profile', payload);
       setUser(res.data);
       toast.success('Profile updated successfully');
-      setPassword(''); // clear password field after successful update
+      setPassword(''); // clear password fields after successful update
+      setConfirmPassword('');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to update profile');
     } finally {
@@ -96,15 +105,48 @@ const Profile = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                <input 
-                  type="password" 
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
-                  placeholder="Leave blank to keep current password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  minLength="6"
-                />
+                <div className="relative">
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                    placeholder="Leave blank to keep current password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    minLength="6"
+                  />
+                  <button 
+                    type="button"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
+
+              {password && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Confirm New Password</label>
+                  <div className="relative">
+                    <input 
+                      type={showConfirmPassword ? "text" : "password"} 
+                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      placeholder="Confirm new password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required={!!password}
+                      minLength="6"
+                    />
+                    <button 
+                      type="button"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    >
+                      {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                </div>
+              )}
 
               <div className="pt-2">
                 <button 

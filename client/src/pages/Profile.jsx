@@ -84,7 +84,7 @@ const Profile = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
                 <input 
                   type="email" 
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-500 cursor-not-allowed outline-none truncate"
                   value={user?.email || ''}
                   disabled
                 />
@@ -95,7 +95,7 @@ const Profile = () => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                 <input 
                   type="text" 
-                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none truncate"
                   placeholder="John Doe"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -108,7 +108,7 @@ const Profile = () => {
                 <div className="relative">
                   <input 
                     type={showPassword ? "text" : "password"} 
-                    className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                    className="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none truncate"
                     placeholder="Leave blank to keep current password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -130,7 +130,7 @@ const Profile = () => {
                   <div className="relative">
                     <input 
                       type={showConfirmPassword ? "text" : "password"} 
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                      className="w-full pl-4 pr-12 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none truncate"
                       placeholder="Confirm new password"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}

@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
       setToken(res.data.token);
       return { success: true };
     } catch (err) {
-      return { success: false, message: err.response?.data?.errors?.[0]?.msg || 'Registration failed' };
+      return { success: false, message: err.response?.data?.errors?.[0]?.msg || err.response?.data?.message || 'Registration failed' };
     }
   };
 
@@ -46,7 +46,7 @@ export const AuthProvider = ({ children }) => {
       setToken(res.data.token);
       return { success: true };
     } catch (err) {
-      return { success: false, message: err.response?.data?.errors?.[0]?.msg || 'Login failed' };
+      return { success: false, message: err.response?.data?.errors?.[0]?.msg || err.response?.data?.message || 'Login failed' };
     }
   };
 

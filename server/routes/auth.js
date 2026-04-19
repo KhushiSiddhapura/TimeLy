@@ -59,7 +59,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).json({ error: 'Server error', message: err.message });
     }
   }
 );
@@ -111,7 +111,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send('Server error');
+      res.status(500).json({ error: 'Server error', message: err.message });
     }
   }
 );
@@ -125,7 +125,7 @@ router.get('/me', auth, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server Error');
+    res.status(500).json({ error: 'Server error', message: err.message });
   }
 });
 

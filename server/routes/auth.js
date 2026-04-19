@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const auth = require('../middleware/auth');
 const { check, validationResult } = require('express-validator');
 const User = require('../models/User');
+const TimetableBlock = require('../models/TimetableBlock');
 
 // @route   POST api/auth/register
 // @desc    Register user
@@ -123,6 +124,52 @@ router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error', message: err.message });
+  }
+});
+
+// @route   PUT api/auth/profile
+// @desc    Update user profile (name, password)
+// @access  Private
+router.put('/profile', auth, async (req, res) => {
+  const { name, password } = req.body;
+  const userFields = {};
+  
+  if (name) userFields.name = name;
+  
+  try {
+    if (password) {
+      const salt = await bcrypt.genSalt(10);
+      userFields.password = await bcrypt.hash(password, salt);
+    }
+    
+    let user = await User.findByIdAndUpdate(
+      req.user.id,
+      { $set: userFields },
+      { new: true }
+    ).select('-password');
+    
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ error: 'Server error', message: err.message });
+  }
+});
+
+// @route   DELETE api/auth/profile
+// @desc    Delete user account and associated data
+// @access  Private
+router.delete('/profile', auth, async (req, res) => {
+  try {
+    // Delete all timetable blocks associated with this user
+    await TimetableBlock.deleteMany({ user: req.user.id });
+    
+    // Delete the user
+    await User.findByIdAndDelete(req.user.id);
+    
+    res.json({ msg: 'User account and data completely deleted' });
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ error: 'Server error', message: err.message });

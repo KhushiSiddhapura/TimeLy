@@ -17,7 +17,16 @@ app.use('/api/timetable', require('./routes/timetable'));
 
 // Database Connection
 mongoose.connect(process.env.MONGO_URI || "mongodb://localhost:27017/timetable")
-.then(() => console.log('MongoDB Connected'))
+.then(async () => {
+  console.log('MongoDB Connected');
+  try {
+    // Sync indexes to remove any old, stale unique indexes (like username_1)
+    await require('./models/User').syncIndexes();
+    console.log('User indexes synced successfully');
+  } catch (err) {
+    console.log('Error syncing indexes:', err.message);
+  }
+})
 .catch(err => console.log('MongoDB Connection Error:', err));
 
 const PORT = process.env.PORT || 5000;

@@ -2,7 +2,7 @@ import { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { format, addDays, subDays } from 'date-fns';
 import { Link } from 'react-router-dom';
-import { LogOut, ChevronLeft, ChevronRight, Plus, CheckCircle, Circle, User as UserIcon } from 'lucide-react';
+import { LogOut, ChevronLeft, ChevronRight, Plus, CheckCircle, Circle, User as UserIcon, Shield } from 'lucide-react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import TimetableList from '../components/TimetableList';
@@ -86,6 +86,11 @@ const Dashboard = () => {
             <button onClick={handleNextDay} className="p-1 sm:p-2 hover:bg-white rounded-full transition-colors"><ChevronRight size={18}/></button>
           </div>
           
+          {user?.isAdmin && (
+            <Link to="/admin" className="flex items-center text-gray-500 hover:text-indigo-600 transition-colors mr-2 sm:mr-4">
+              <Shield size={20} className="sm:mr-2" /> <span className="hidden sm:inline">Admin</span>
+            </Link>
+          )}
           <Link to="/profile" className="flex items-center text-gray-500 hover:text-indigo-600 transition-colors mr-2 sm:mr-4">
             <UserIcon size={20} className="sm:mr-2" /> <span className="hidden sm:inline">Profile</span>
           </Link>

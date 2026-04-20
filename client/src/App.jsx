@@ -9,12 +9,22 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
 
 const ProtectedRoute = ({ children }) => {
   const { token, loading } = useContext(AuthContext);
   
   if (loading) return <div className="h-screen w-screen flex items-center justify-center">Loading...</div>;
   if (!token) return <Navigate to="/login" />;
+  return children;
+};
+
+const AdminRoute = ({ children }) => {
+  const { user, token, loading } = useContext(AuthContext);
+  
+  if (loading) return <div className="h-screen w-screen flex items-center justify-center">Loading...</div>;
+  if (!token) return <Navigate to="/login" />;
+  if (user && !user.isAdmin) return <Navigate to="/" />;
   return children;
 };
 
@@ -40,6 +50,14 @@ function App() {
                 <ProtectedRoute>
                   <Profile />
                 </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/admin" 
+              element={
+                <AdminRoute>
+                  <AdminDashboard />
+                </AdminRoute>
               } 
             />
           </Routes>

@@ -60,7 +60,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).json({ error: 'Server error', message: err.message });
+      res.status(500).json({ error: 'Server error', message: 'An unexpected error occurred' });
     }
   }
 );
@@ -112,7 +112,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).json({ error: 'Server error', message: err.message });
+      res.status(500).json({ error: 'Server error', message: 'An unexpected error occurred' });
     }
   }
 );
@@ -126,7 +126,7 @@ router.get('/me', auth, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error', message: err.message });
+    res.status(500).json({ error: 'Server error', message: 'An unexpected error occurred' });
   }
 });
 
@@ -154,7 +154,7 @@ router.put('/profile', auth, async (req, res) => {
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error', message: err.message });
+    res.status(500).json({ error: 'Server error', message: 'An unexpected error occurred' });
   }
 });
 
@@ -172,7 +172,7 @@ router.delete('/profile', auth, async (req, res) => {
     res.json({ msg: 'User account and data completely deleted' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({ error: 'Server error', message: err.message });
+    res.status(500).json({ error: 'Server error', message: 'An unexpected error occurred' });
   }
 });
 

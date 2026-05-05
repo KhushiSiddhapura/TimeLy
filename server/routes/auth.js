@@ -123,6 +123,9 @@ router.post(
 router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
+    if (!user) {
+      return res.status(401).json({ msg: 'Token is no longer valid' });
+    }
     res.json(user);
   } catch (err) {
     console.error(err.message);
